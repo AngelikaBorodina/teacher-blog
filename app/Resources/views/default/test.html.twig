@@ -5,6 +5,15 @@
     <title></title>
 </head>
 <body>
+{{ form_start(form)}}
+    {{ form_widget(form)}}
+{{ form_end(form)}}
+
+{% if(formQuestion) %}
+    {{ form_start(formQuestion)}}
+        {{ form_widget(formQuestion)}}
+    {{ form_end(formQuestion)}}
+{% endif %}
 
 </body>
 </html>

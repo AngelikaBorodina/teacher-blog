@@ -8,7 +8,12 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Form\QuestionType;
+use AppBundle\Form\TestType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\ClickableInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use AppBundle\Entity\Question;
@@ -24,7 +29,7 @@ class TestController extends Controller
      * @return string
      */
     public function indexAction (Request $request, $id) {
-//        $this->getDoctrine()->getManager();
+
         $questionsData=Array();
 
         /** @var Test $test */
@@ -56,4 +61,61 @@ class TestController extends Controller
 //        ]);
     }
 
+    /**
+     * @param Request $request
+     * @Route("/create", name ="create")
+     */
+    public function formAction(Request $request)
+    {
+        $test=new Test();
+//        dump($test);die();
+        $form=$this->createFormBuilder($test)
+            ->add('title',TextType::class, ['label'=>'Введите название теста'])
+            ->add('save',SubmitType::class,['label'=>'Создать'])
+            ->getForm();
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()){
+            $test=$form->getData();
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($test);
+            $entityManager->flush();
+            return $this->redirectToRoute('create');
+        }
+        return $this->render('default/test.html.twig',['form'=>$form->createView()]);
+    }
+
+    /**
+     * @param Request $request
+     * @Route("/createForm", name ="createForm")
+     */
+    public function formClassAction(Request $request)
+    {
+        $test=new Test();
+        $formTest=$this->createForm(TestType::class,$test);
+        $formQuestion=false;
+
+        $formTest->handleRequest($request);
+
+        if ($formTest->isSubmitted() && $formTest->isValid()){
+
+            if ($formTest->get('addQuestion')->isClicked()){
+                $question=new Question();
+                $formQuestion=$this->createForm(QuestionType::class,$question);
+
+                $formQuestion->handleRequest($request);
+                $formQuestion=$formQuestion->createView();
+            }
+            $test=$formTest->getData();
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($test);
+            $entityManager->flush();
+            //return $this->redirectToRoute('createForm');
+        }
+
+        return $this->render('default/test.html.twig',[
+            'form'=>$formTest->createView(),
+            'formQuestion'=>$formQuestion
+        ]);
+    }
 }
