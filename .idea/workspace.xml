@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="10438ceb-34fa-43fc-8d7a-f8e8b1354292" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Controller/TestController.php" afterPath="$PROJECT_DIR$/src/AppBundle/Controller/TestController.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Service/Messenger.php" afterPath="$PROJECT_DIR$/src/AppBundle/Service/Messenger.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -15,7 +14,7 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="TestController.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="TestController.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/TestController.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="123">
@@ -31,8 +30,40 @@
       <file leaf-file-name="Messenger.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/AppBundle/Service/Messenger.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="442">
-              <caret line="17" column="29" lean-forward="false" selection-start-line="17" selection-start-column="29" selection-end-line="17" selection-end-column="29" />
+            <state relative-caret-position="468">
+              <caret line="18" column="38" lean-forward="false" selection-start-line="18" selection-start-column="38" selection-end-line="18" selection-end-column="38" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MyFirstCommand.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/AppBundle/Command/MyFirstCommand.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-111">
+              <caret line="2" column="28" lean-forward="false" selection-start-line="2" selection-start-column="28" selection-end-line="2" selection-end-column="28" />
+              <folding>
+                <element signature="e#37#83#0#PHP" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Command.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/vendor/symfony/symfony/src/Symfony/Component/Console/Command/Command.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="106">
+              <caret line="373" column="79" lean-forward="false" selection-start-line="373" selection-start-column="79" selection-end-line="373" selection-end-column="79" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="InputArgument.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/vendor/symfony/symfony/src/Symfony/Component/Console/Input/InputArgument.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="338">
+              <caret line="21" column="19" lean-forward="false" selection-start-line="21" selection-start-column="6" selection-end-line="21" selection-end-column="19" />
               <folding />
             </state>
           </provider>
@@ -58,8 +89,9 @@
         <option value="$PROJECT_DIR$/app/Resources/views/default/test.html.twig" />
         <option value="$PROJECT_DIR$/src/AppBundle/Service/MessageGenerator.php" />
         <option value="$PROJECT_DIR$/src/AppBundle/Service/SendMesseger.php" />
-        <option value="$PROJECT_DIR$/src/AppBundle/Service/Messenger.php" />
         <option value="$PROJECT_DIR$/src/AppBundle/Controller/TestController.php" />
+        <option value="$PROJECT_DIR$/src/AppBundle/Service/Messenger.php" />
+        <option value="$PROJECT_DIR$/src/AppBundle/Command/MyFirstCommand.php" />
       </list>
     </option>
   </component>
@@ -261,12 +293,12 @@
       <updated>1548176967366</updated>
       <workItem from="1548176970510" duration="51236000" />
       <workItem from="1548503862607" duration="5991000" />
-      <workItem from="1548668739517" duration="1359000" />
+      <workItem from="1548668739517" duration="4681000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="58586000" />
+    <option name="totallyTimeSpent" value="61908000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="25" width="1299" height="743" extended-state="6" />
@@ -539,7 +571,7 @@
         <state relative-caret-position="349">
           <caret line="392" column="23" lean-forward="false" selection-start-line="392" selection-start-column="23" selection-end-line="392" selection-end-column="23" />
           <folding>
-            <element signature="e#292#340#0#PHP" expanded="true" />
+            <element signature="e#292#340#0#PHP" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -626,14 +658,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Service/Messenger.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="442">
-          <caret line="17" column="29" lean-forward="false" selection-start-line="17" selection-start-column="29" selection-end-line="17" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/TestController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="123">
@@ -641,6 +665,40 @@
           <folding>
             <element signature="e#6#88#0#PHP" expanded="true" />
             <element signature="e#123#155#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Service/Messenger.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="468">
+          <caret line="18" column="38" lean-forward="false" selection-start-line="18" selection-start-column="38" selection-end-line="18" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/symfony/symfony/src/Symfony/Component/Console/Command/Command.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="106">
+          <caret line="373" column="79" lean-forward="false" selection-start-line="373" selection-start-column="79" selection-end-line="373" selection-end-column="79" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/symfony/symfony/src/Symfony/Component/Console/Input/InputArgument.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="338">
+          <caret line="21" column="19" lean-forward="false" selection-start-line="21" selection-start-column="6" selection-end-line="21" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Command/MyFirstCommand.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-111">
+          <caret line="2" column="28" lean-forward="false" selection-start-line="2" selection-start-column="28" selection-end-line="2" selection-end-column="28" />
+          <folding>
+            <element signature="e#37#83#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>

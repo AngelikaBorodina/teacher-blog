@@ -16,6 +16,6 @@ class Messenger
             ->setFrom('khmelinina34@gmail.com')
             ->setTo('sabaka.and@mail.ru')
             ->addPart($text);
-        dump($this->mailer->send($message));die();
+        $this->mailer->send($message);
     }
 }
