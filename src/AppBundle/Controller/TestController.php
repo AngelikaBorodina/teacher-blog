@@ -10,11 +10,12 @@ namespace AppBundle\Controller;
 
 use AppBundle\Form\QuestionType;
 use AppBundle\Form\TestType;
+use AppBundle\Service\Messenger;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\ClickableInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use AppBundle\Entity\Question;
 use AppBundle\Entity\Answer;
@@ -28,7 +29,7 @@ class TestController extends Controller
      * @Route("/test/{id}", name="test", requirements={"id": "[0-9]+"})
      * @return string
      */
-    public function indexAction (Request $request, $id) {
+    public function indexAction ( $id) {
 
         $questionsData=Array();
 
@@ -62,8 +63,9 @@ class TestController extends Controller
     }
 
     /**
-     * @param Request $request
      * @Route("/create", name ="create")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function formAction(Request $request)
     {
@@ -86,8 +88,9 @@ class TestController extends Controller
     }
 
     /**
-     * @param Request $request
      * @Route("/createForm", name ="createForm")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function formClassAction(Request $request)
     {
@@ -117,5 +120,17 @@ class TestController extends Controller
             'form'=>$formTest->createView(),
             'formQuestion'=>$formQuestion
         ]);
+    }
+
+    /**
+     * @Route("/mail", name ="createForm")
+     * @param Messenger $messenger
+     * @return Response
+     */
+    public function sendMessageAction(Messenger $messenger)
+    {
+        $messenger->sendMessage('la-la-la');
+        $this->addFlash('success','success');
+        return new Response('');
     }
 }
