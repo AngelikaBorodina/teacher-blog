@@ -43,7 +43,6 @@ class Question
 
     /**
      * @ORM\OneToMany(targetEntity="Answer", mappedBy="question")
-     *
      */
     private $answers;
 
