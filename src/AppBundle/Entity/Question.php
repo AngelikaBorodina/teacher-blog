@@ -28,7 +28,7 @@ class Question
     /**
      * @ORM\Column(type="string",length=255, nullable=true)
      */
-    private $question;
+    private $description;
 
     /**
      * @ORM\Column(type="string",length=255, nullable=true)
@@ -36,22 +36,20 @@ class Question
     private $image;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Type")
-     * @ORM\JoinColumn(name="type_id", referencedColumnName="id", nullable=false)
+     * @ORM\Column(type="integer", nullable=false)
      */
     private $type;
 
     /**
-     * @ORM\OneToMany(targetEntity="Answer", mappedBy="question")
+     * @ORM\OneToMany(targetEntity="Variant", mappedBy="question")
      */
-    private $answers;
-
+    private $variants;
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->answers = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->variants = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -65,27 +63,27 @@ class Question
     }
 
     /**
-     * Set question
+     * Set description
      *
-     * @param string $question
+     * @param string $description
      *
      * @return Question
      */
-    public function setQuestion($question)
+    public function setDescription($description)
     {
-        $this->question = $question;
+        $this->description = $description;
 
         return $this;
     }
 
     /**
-     * Get question
+     * Get description
      *
      * @return string
      */
-    public function getQuestion()
+    public function getDescription()
     {
-        return $this->question;
+        return $this->description;
     }
 
     /**
@@ -113,6 +111,30 @@ class Question
     }
 
     /**
+     * Set type
+     *
+     * @param integer $type
+     *
+     * @return Question
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return integer
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
      * Set test
      *
      * @param \AppBundle\Entity\Test $test
@@ -137,60 +159,36 @@ class Question
     }
 
     /**
-     * Set type
+     * Add variant
      *
-     * @param \AppBundle\Entity\Type $type
+     * @param \AppBundle\Entity\Variant $variant
      *
      * @return Question
      */
-    public function setType(\AppBundle\Entity\Type $type)
+    public function addVariant(\AppBundle\Entity\Variant $variant)
     {
-        $this->type = $type;
+        $this->variants[] = $variant;
 
         return $this;
     }
 
     /**
-     * Get type
+     * Remove variant
      *
-     * @return \AppBundle\Entity\Type
+     * @param \AppBundle\Entity\Variant $variant
      */
-    public function getType()
+    public function removeVariant(\AppBundle\Entity\Variant $variant)
     {
-        return $this->type;
+        $this->variants->removeElement($variant);
     }
 
     /**
-     * Add answer
-     *
-     * @param \AppBundle\Entity\Answer $answer
-     *
-     * @return Question
-     */
-    public function addAnswer(\AppBundle\Entity\Answer $answer)
-    {
-        $this->answers[] = $answer;
-
-        return $this;
-    }
-
-    /**
-     * Remove answer
-     *
-     * @param \AppBundle\Entity\Answer $answer
-     */
-    public function removeAnswer(\AppBundle\Entity\Answer $answer)
-    {
-        $this->answers->removeElement($answer);
-    }
-
-    /**
-     * Get answers
+     * Get variants
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getAnswers()
+    public function getVariants()
     {
-        return $this->answers;
+        return $this->variants;
     }
 }

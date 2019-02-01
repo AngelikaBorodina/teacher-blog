@@ -12,6 +12,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Test
 {
+    const RADIO = 1;
+    const CHECK = 2;
+    const TEXT = 3;
+
     /**
      * @ORM\Id //первичный ключ
      * @ORM\Column(type="integer")
@@ -25,10 +29,27 @@ class Test
     private $title;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Classes")
+     * @ORM\JoinColumn(name="class_id", referencedColumnName="id")
+     */
+    private $class;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $active;
+
+    /**
      * @ORM\OneToMany(targetEntity="Question", mappedBy="test")
-     *
      */
     private $questions;
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->questions = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id
@@ -63,22 +84,63 @@ class Test
     {
         return $this->title;
     }
+
     /**
-     * Constructor
+     * Set active
+     *
+     * @param boolean $active
+     *
+     * @return Test
      */
-    public function __construct()
+    public function setActive($active)
     {
-        $this->questions = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->active = $active;
+
+        return $this;
+    }
+
+    /**
+     * Get active
+     *
+     * @return boolean
+     */
+    public function getActive()
+    {
+        return $this->active;
+    }
+
+    /**
+     * Set class
+     *
+     * @param \AppBundle\Entity\Classes $class
+     *
+     * @return Test
+     */
+    public function setClass(\AppBundle\Entity\Classes $class = null)
+    {
+        $this->class = $class;
+
+        return $this;
+    }
+
+    /**
+     * Get class
+     *
+     * @return \AppBundle\Entity\Classes
+     */
+    public function getClass()
+    {
+        return $this->class;
     }
 
     /**
      * Add question
      *
-     * @param \AppBundle\Entity\Answer $question
+     * @param \AppBundle\Entity\Question $question
      *
      * @return Test
      */
-    public function addQuestion(\AppBundle\Entity\Answer $question)
+    public function addQuestion(\AppBundle\Entity\Question $question)
     {
         $this->questions[] = $question;
 
@@ -88,9 +150,9 @@ class Test
     /**
      * Remove question
      *
-     * @param \AppBundle\Entity\Answer $question
+     * @param \AppBundle\Entity\Question $question
      */
-    public function removeQuestion(\AppBundle\Entity\Answer $question)
+    public function removeQuestion(\AppBundle\Entity\Question $question)
     {
         $this->questions->removeElement($question);
     }

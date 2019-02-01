@@ -9,16 +9,23 @@
 namespace AppBundle\Controller;
 
 
+use AppBundle\Entity\Classes;
+use AppBundle\Entity\CompletedTests;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\Common\Persistence\ObjectManager;
 use AppBundle\Entity\Question;
-use AppBundle\Entity\Answer;
+use AppBundle\Entity\Variant;
 use AppBundle\Entity\Test;
 
 class ELTestController extends Controller
 {
+    const RADIO = 1;
+    const CHECK = 2;
+    const TEXT = 3;
+
     /**
      * @param $id
      * @Route("/test/{id}", name="test", requirements={"id": "[0-9]+"})
@@ -36,17 +43,17 @@ class ELTestController extends Controller
 
         /** @var Question $question */
         foreach ($test->getQuestions() as $question) {
-            $answersData=array();
-            /** @var Answer $answer */
-            foreach ($question->getAnswers() as $answer) {
-                $answer_id=$answer->getId();
-                $answersData[$answer_id]['answer'] = $answer->getAnswer();
+            $variantsData=array();
+            /** @var Variant $variant */
+            foreach ($question->getVariants() as $variant) {
+                $variant_id=$variant->getId();
+                $variantsData[$variant_id]['variant'] = $variant->getDescription();
             }
             $question_id=$question->getId();
-            $questionsData[$question_id]['question'] = $question->getQuestion();
+            $questionsData[$question_id]['question'] = $question->getDescription();
             $questionsData[$question_id]['image']    = $question->getImage();
-            $questionsData[$question_id]['type']     = $question->getType()->getName();
-            $questionsData[$question_id]['answers']  = $answersData;
+            $questionsData[$question_id]['type']     = $question->getType();
+            $questionsData[$question_id]['variants']  = $variantsData;
         }
         $testData['questions']=$questionsData;
         return $this->json($testData);
@@ -59,33 +66,71 @@ class ELTestController extends Controller
      */
     public function CheckTestAction(Request $request)
     {
-        $answer1=array();
-        $answer1[1]['answer']=1;
-        $answer1[1]['value']='';
-        $answer1[2]['answer']=3;
-        $answer1[2]['value']='';
+        $testArray = [
+            'test'  =>  1,
+            'user'  =>  1,
+            'questions' =>  [
+                1   =>  2,
+                2   =>  [3, 6],
+                3   =>  'зеленый'
+            ]
+        ];
 
-        $answer2=array();
-        $answer2[1]['answer']='';
-        $answer2[1]['value']='6';
-
-        $questions=array();
-        $questions[1]['answers']=$answer1;
-        $questions[2]['answers']='';
-        $questions[3]['answers']=$answer2;
-
-        $test=array();
-        $test['test']=1;
-        $test['user']=1;
-        $test['questions']=$questions;
+        //return $this->json($testArray);
         //=======================================
-        //$data=$request->query->all();
-        foreach ($test as $key =>$item){
 
+        //$data=$request->query->all();
+
+        /** @var Test $test */
+        $test = $this->getDoctrine()->getRepository('AppBundle:Test')->find($testArray['test']);
+        $procent = 100 / $test->getQuestions()->count();
+        $mark=0;
+        $questions = [];
+        foreach ($test->getQuestions() as $question) {
+            $questions[$question->getId()] = $question;
+        }
+        foreach ($testArray['questions'] as $key =>$answers){
+            /** @var Question $question */
+            $question = $questions[$key];
+
+            /** @var Variant $correctAnswers */
+            $correctAnswers = $this ->getDoctrine()->getRepository(Variant::class)
+                        ->findBy(['question' => $key,'is_correct' => 1]);
+
+            switch ($question->getType()) {
+                case Test::RADIO:
+                    ($answers == $correctAnswers[0]->getId()) ? ($mark += $procent) : $mark;
+                    break;
+
+                case Test::CHECK:
+                    if (count($question->getVariants()) == count($answers)) {
+                        break;
+                    };
+                    $procentItem = $procent / count($correctAnswers);
+
+                    //перебираем массив правильных ответов
+                    foreach ($correctAnswers as $value){
+                        (in_array($value->getId(), $answers)) ? ($mark += $procentItem) : $mark;
+                    }
+                    break;
+
+                case Test::TEXT:
+                    ($answers == $correctAnswers[0]->getDescription()) ? ($mark += $procent) : $mark;
+                    break;
+            };
         }
 
+        $completed = new CompletedTests();
+        $completed
+            ->setUser(
+                $this->getDoctrine()->getRepository('AppBundle:User')->find($testArray['user']))
+            ->setTest($test)
+            ->setMark($mark)
+            ->setAnswers(json_encode($testArray['questions']));
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($completed);
+        $entityManager->flush();
 
-        //dump();die();
         return new Response('');
     }
 }

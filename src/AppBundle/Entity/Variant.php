@@ -6,11 +6,11 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="answer")
- * Class Answer
+ * @ORM\Table(name="variant")
+ * Class Variant
  * @package AppBundle\Entity
  */
-class Answer
+class Variant
 {
     /**
      * @ORM\Id //первичный ключ
@@ -20,7 +20,7 @@ class Answer
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Question", inversedBy="answers")
+     * @ORM\ManyToOne(targetEntity="Question", inversedBy="variants")
      * @ORM\JoinColumn(name="question_id", referencedColumnName="id", onDelete="cascade", nullable=false)
      */
     private $question;
@@ -28,7 +28,7 @@ class Answer
     /**
      * @ORM\Column(type="string",length=255, nullable=false)
      */
-    private $answer;
+    private $description;
 
     /**
      * @ORM\Column(type="boolean")
@@ -47,27 +47,27 @@ class Answer
     }
 
     /**
-     * Set answer
+     * Set description
      *
-     * @param string $answer
+     * @param string $description
      *
-     * @return Answer
+     * @return Variant
      */
-    public function setAnswer($answer)
+    public function setDescription($description)
     {
-        $this->answer = $answer;
+        $this->description = $description;
 
         return $this;
     }
 
     /**
-     * Get answer
+     * Get description
      *
      * @return string
      */
-    public function getAnswer()
+    public function getDescription()
     {
-        return $this->answer;
+        return $this->description;
     }
 
     /**
@@ -75,7 +75,7 @@ class Answer
      *
      * @param boolean $isCorrect
      *
-     * @return Answer
+     * @return Variant
      */
     public function setIsCorrect($isCorrect)
     {
@@ -99,7 +99,7 @@ class Answer
      *
      * @param \AppBundle\Entity\Question $question
      *
-     * @return Answer
+     * @return Variant
      */
     public function setQuestion(\AppBundle\Entity\Question $question)
     {

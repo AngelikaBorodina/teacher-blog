@@ -1,4 +1,10 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: angelika
+ * Date: 29.01.19
+ * Time: 16:40
+ */
 
 namespace AppBundle\Entity;
 
@@ -6,11 +12,11 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="type")
- * Class Type
+ * @ORM\Table(name="classes")
+ * Class Classes
  * @package AppBundle\Entity
  */
-class Type
+class Classes
 {
     /**
      * @ORM\Id //первичный ключ
@@ -20,9 +26,14 @@ class Type
     private $id;
 
     /**
-     * @ORM\Column(name="title",type="string",length=255,nullable=false)
+     * @ORM\Column(type="integer", nullable=false)
      */
-    private $name;
+    private $class;
+
+    public function __toString()
+    {
+        return (string)$this->class;
+    }
 
     /**
      * Get id
@@ -35,26 +46,26 @@ class Type
     }
 
     /**
-     * Set name
+     * Set class
      *
-     * @param string $name
+     * @param integer $class
      *
-     * @return Type
+     * @return Classes
      */
-    public function setName($name)
+    public function setClass($class)
     {
-        $this->name = $name;
+        $this->class = $class;
 
         return $this;
     }
 
     /**
-     * Get name
+     * Get class
      *
-     * @return string
+     * @return integer
      */
-    public function getName()
+    public function getClass()
     {
-        return $this->name;
+        return $this->class;
     }
 }
