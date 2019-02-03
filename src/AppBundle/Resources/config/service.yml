@@ -1,0 +1,8 @@
+services:
+
+    app.service.calculation:
+        class: AppBundle\Service\Calculation
+        autowire: false
+        arguments:
+           - "@doctrine.orm.default_entity_manager"
+

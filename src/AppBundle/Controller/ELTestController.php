@@ -11,6 +11,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Classes;
 use AppBundle\Entity\CompletedTests;
+use AppBundle\Service\Calculation;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,9 +23,6 @@ use AppBundle\Entity\Test;
 
 class ELTestController extends Controller
 {
-    const RADIO = 1;
-    const CHECK = 2;
-    const TEXT = 3;
 
     /**
      * @param $id
@@ -33,93 +31,54 @@ class ELTestController extends Controller
      */
     public function indexAction($id){
 
-        $questionsData=Array();
+        $questionsData = Array();
 
         /** @var Test $test */
-        $test=$this->getDoctrine()->getRepository('AppBundle:Test')->find($id);
+        $test = $this->getDoctrine()->getRepository('AppBundle:Test')->find($id);
 
-        $testData=Array();
-        $testData['title']=$test->getTitle();
+        $testData = Array();
+        $testData['title'] = $test->getTitle();
 
         /** @var Question $question */
         foreach ($test->getQuestions() as $question) {
-            $variantsData=array();
+            $variantsData = array();
             /** @var Variant $variant */
             foreach ($question->getVariants() as $variant) {
-                $variant_id=$variant->getId();
+                $variant_id = $variant->getId();
                 $variantsData[$variant_id]['variant'] = $variant->getDescription();
             }
-            $question_id=$question->getId();
+            $question_id = $question->getId();
             $questionsData[$question_id]['question'] = $question->getDescription();
             $questionsData[$question_id]['image']    = $question->getImage();
             $questionsData[$question_id]['type']     = $question->getType();
-            $questionsData[$question_id]['variants']  = $variantsData;
+            $questionsData[$question_id]['variants'] = $variantsData;
         }
-        $testData['questions']=$questionsData;
+        $testData['questions'] = $questionsData;
         return $this->json($testData);
     }
 
     /**
-     * @param Request $request
+     * @param Request $request, Calculation $calculation
      * @Route("/checkTest", name="checkTest")
      * @return Response
      */
-    public function CheckTestAction(Request $request)
+    public function CheckTestAction(Request $request, Calculation $calculation)
     {
         $testArray = [
             'test'  =>  1,
             'user'  =>  1,
             'questions' =>  [
                 1   =>  2,
-                2   =>  [3, 6],
+                2   =>  [3, 6, 2],
                 3   =>  'зеленый'
             ]
         ];
-
-        //return $this->json($testArray);
         //=======================================
 
         //$data=$request->query->all();
-
         /** @var Test $test */
         $test = $this->getDoctrine()->getRepository('AppBundle:Test')->find($testArray['test']);
-        $procent = 100 / $test->getQuestions()->count();
-        $mark=0;
-        $questions = [];
-        foreach ($test->getQuestions() as $question) {
-            $questions[$question->getId()] = $question;
-        }
-        foreach ($testArray['questions'] as $key =>$answers){
-            /** @var Question $question */
-            $question = $questions[$key];
-
-            /** @var Variant $correctAnswers */
-            $correctAnswers = $this ->getDoctrine()->getRepository(Variant::class)
-                        ->findBy(['question' => $key,'is_correct' => 1]);
-
-            switch ($question->getType()) {
-                case Test::RADIO:
-                    ($answers == $correctAnswers[0]->getId()) ? ($mark += $procent) : $mark;
-                    break;
-
-                case Test::CHECK:
-                    if (count($question->getVariants()) == count($answers)) {
-                        break;
-                    };
-                    $procentItem = $procent / count($correctAnswers);
-
-                    //перебираем массив правильных ответов
-                    foreach ($correctAnswers as $value){
-                        (in_array($value->getId(), $answers)) ? ($mark += $procentItem) : $mark;
-                    }
-                    break;
-
-                case Test::TEXT:
-                    ($answers == $correctAnswers[0]->getDescription()) ? ($mark += $procent) : $mark;
-                    break;
-            };
-        }
-
+        $mark=$calculation->calcMain($testArray,$test);
         $completed = new CompletedTests();
         $completed
             ->setUser(

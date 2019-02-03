@@ -12,6 +12,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Question
 {
+    const RADIO = 'radiobutton';
+    const CHECK = 'checkbox';
+    const TEXT = 'text';
     /**
      * @ORM\Id //первичный ключ
      * @ORM\Column(type="integer")
@@ -36,7 +39,7 @@ class Question
     private $image;
 
     /**
-     * @ORM\Column(type="integer", nullable=false)
+     * @ORM\Column(type="string", nullable=false)
      */
     private $type;
 

@@ -24,31 +24,6 @@ use AppBundle\Entity\Test;
 class TestController extends Controller
 {
     /**
-     * @Route("/create", name ="create")
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
-    public function formAction(Request $request)
-    {
-        $test=new Test();
-//        dump($test);die();
-        $form=$this->createFormBuilder($test)
-            ->add('title',TextType::class, ['label'=>'Введите название теста'])
-            ->add('save',SubmitType::class,['label'=>'Создать'])
-            ->getForm();
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()){
-            $test=$form->getData();
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($test);
-            $entityManager->flush();
-            return $this->redirectToRoute('create');
-        }
-        return $this->render('default/test.html.twig',['form'=>$form->createView()]);
-    }
-
-    /**
      * @Route("/createForm", name ="createForm")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
@@ -81,17 +56,5 @@ class TestController extends Controller
             'form'=>$formTest->createView(),
             'formQuestion'=>$formQuestion
         ]);
-    }
-
-    /**
-     * @Route("/mail", name ="createForm")
-     * @param Messenger $messenger
-     * @return Response
-     */
-    public function sendMessageAction(Messenger $messenger)
-    {
-        $messenger->sendMessage('la-la-la');
-        $this->addFlash('success','success');
-        return new Response('');
     }
 }

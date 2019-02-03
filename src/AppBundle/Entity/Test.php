@@ -12,10 +12,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Test
 {
-    const RADIO = 1;
-    const CHECK = 2;
-    const TEXT = 3;
-
     /**
      * @ORM\Id //первичный ключ
      * @ORM\Column(type="integer")
