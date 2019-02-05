@@ -3,6 +3,7 @@
 namespace AppBundle\Admin;
 
 use AppBundle\Entity\Classes;
+use AppBundle\Validator\Constraints\EmailExists;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -21,30 +22,25 @@ class UserAdmin extends AbstractAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('id')
-            ->add('fio')
-            ->add('email')
-            ->add('password')
-            ->add('admin')
-            ->add('date')
+            ->add('fio', null, ['label' => 'Фамилия Имя Отчество'])
+            ->add('class', null, ['label' => 'Класс'])
+            ->add('email', null, ['label' => 'E-mail'])
         ;
     }
 
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('id')
-            ->add('fio')
-            ->add('email')
-            ->add('password')
-            ->add('admin')
-            ->add('date')
+            ->add('fio', null, ['label' => 'Фамилия Имя Отчество'])
+            ->add('class', null, ['label' => 'Класс'])
+            ->add('email', null, ['label' => 'E-mail'])
+            ->add('password', null, ['label' => 'Пароль'])
             ->add('_action', null, [
                 'actions' => [
-                    'show' => [],
                     'edit' => [],
                     'delete' => [],
                 ],
+                'label' => 'Действия'
             ])
         ;
     }
@@ -53,37 +49,35 @@ class UserAdmin extends AbstractAdmin
     {
         $formMapper
             ->add('fio', TextType::class, [
-                'label' =>  'ФИО',
+                'label' =>  'Фамилия Имя Отчество',
                 'required'  =>  true,
                 'constraints'   =>  [
                     new NotBlank(['message' => 'Заполни ФИО']),
-                    new Regex(['pattern' => '/^\d+$/', 'message' => 'Неверно заполнено ФИО']),
-                    new Length(['min' => 5, 'minMessage' => 'min', 'max' => 10, 'maxMessage' => 'max'])
+                    new Regex(['pattern' => '/[а-яА-ЯёЁ]/', 'message' => 'Неверно заполнено ФИО']),
+                    new Length(['min' => 10, 'minMessage' => 'Слишком короткое ФИО'])
                 ]
             ])
-            ->add('email', EmailType::class, [
+            ->add('email', null, [
+                'label' =>  'E-mail',
                 'constraints'   =>  [
-                    new Email(['message' => 'Неверно заполнен E-mail'])
+                    new NotBlank(['message' => 'Заполни E-mail']),
+                    new Email(['message' => 'Неверно заполнен E-mail']),
+                    new EmailExists()
                 ]
             ])
-            ->add('password')
-            ->add('admin')
-            ->add('date')
-            ->add('class', EntityType::class, [
-                'class' =>  Classes::class
+            ->add('password', null, [
+                'label' =>  'Пароль',
+                'constraints'   =>  [
+                    new NotBlank(['message' => 'Заполни пароль'])
+                ]
             ])
-        ;
-    }
-
-    protected function configureShowFields(ShowMapper $showMapper)
-    {
-        $showMapper
-            ->add('id')
-            ->add('fio')
-            ->add('email')
-            ->add('password')
-            ->add('admin')
-            ->add('date')
+            ->add('class', EntityType::class, [
+                'class' =>  Classes::class,
+                'label' =>  'Класс',
+                'constraints'   =>  [
+                    new NotBlank(['message' => 'Заполни пароль'])
+                ]
+            ])
         ;
     }
 }

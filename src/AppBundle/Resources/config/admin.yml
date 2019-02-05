@@ -10,19 +10,19 @@ services:
         class: AppBundle\Admin\ClassesAdmin
         arguments: [~, AppBundle\Entity\Classes, Sonata\AdminBundle\Controller\CRUDController]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: test, label: Классы }
+            - { name: sonata.admin, manager_type: orm, group: classes, label: Классы }
         public: true
 
-#    app.admin.user:
-#        class: AppBundle\Admin\UserAdmin
-#        arguments: [~, AppBundle\Entity\User, Sonata\AdminBundle\Controller\CRUDController]
-#        tags:
-#            - { name: sonata.admin, manager_type: orm, group: test, label: Пользователи }
-#        public: true
-
-    app.admin.admin_user:
-        class: AppBundle\Admin\AdminUserAdmin
+    app.admin.user:
+        class: AppBundle\Admin\UserAdmin
         arguments: [~, AppBundle\Entity\User, Sonata\AdminBundle\Controller\CRUDController]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: test, label: Пользователи }
+            - { name: sonata.admin, manager_type: orm, group: students, label: Ученики }
         public: true
+
+#    app.admin.admin_user:
+#        class: AppBundle\Admin\AdminUserAdmin
+#        arguments: [~, AppBundle\Entity\User, Sonata\AdminBundle\Controller\CRUDController]
+#        tags:
+#            - { name: sonata.admin, manager_type: orm, group: users, label: Пользователи }
+#        public: true

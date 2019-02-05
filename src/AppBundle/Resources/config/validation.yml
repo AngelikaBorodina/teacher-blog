@@ -1,0 +1,5 @@
+AppBundle\Entity\AcmeEntity:
+    properties:
+        name:
+            - NotBlank: ~
+            - AppBundle\Validator\Constraints\ClassExists: ~

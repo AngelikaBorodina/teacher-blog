@@ -16,7 +16,7 @@ class SiteController extends Controller
     {
         /** @var User $admin */
         $admin=$this->getDoctrine()->getRepository(User::class)->findBy(['admin'=>true]);
-        dump($admin);die();
+
 
         return $this->render('default/index.html.twig', [
             'base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,

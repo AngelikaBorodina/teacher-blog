@@ -6,3 +6,17 @@ services:
         arguments:
            - "@doctrine.orm.default_entity_manager"
 
+    app.validator.class_exists:
+        class: AppBundle\Validator\Constraints\ClassExistsValidator
+        autowire: false
+        arguments:
+          - "@doctrine.orm.default_entity_manager"
+        tags: ['validator.constraint_validator']
+
+    app.validator.email_exists:
+            class: AppBundle\Validator\Constraints\EmailExistsValidator
+            autowire: false
+            arguments:
+              - "@doctrine.orm.default_entity_manager"
+            tags: ['validator.constraint_validator']
+

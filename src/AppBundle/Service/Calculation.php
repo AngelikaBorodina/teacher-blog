@@ -8,12 +8,10 @@
 
 namespace AppBundle\Service;
 
-
-use Doctrine\ORM\EntityManagerInterface;
-
 use AppBundle\Entity\Question;
 use AppBundle\Entity\Variant;
 use AppBundle\Entity\Test;
+use Doctrine\ORM\EntityManagerInterface;
 
 class Calculation
 {
