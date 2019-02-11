@@ -3,9 +3,11 @@
 namespace AppBundle\Admin;
 
 use AppBundle\Entity\Test;
-use AppBundle\Form\Admin\DataTransformer;
+use AppBundle\Form\Admin\QuestionsTransformer;
 use AppBundle\Form\Admin\QuestionType;
+use Knp\Menu\ItemInterface as MenuItemInterface;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
@@ -13,6 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class TestAdmin extends AbstractAdmin
 {
+//    protected $baseRoutePattern = 'tests';
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
@@ -38,7 +41,7 @@ class TestAdmin extends AbstractAdmin
         /** @var Test $test */
         $test = $this->getSubject();
         $container = $this->getConfigurationPool()->getContainer();
-        $transformer = new DataTransformer($container->get('doctrine.orm.default_entity_manager'), $test);
+        $transformer = new QuestionsTransformer($container->get('doctrine.orm.default_entity_manager'), $test);
 
         $formMapper
             ->add('title', null, ['label' => 'Название теста'])
@@ -48,7 +51,7 @@ class TestAdmin extends AbstractAdmin
                 'label' =>  'Вопросы:',
                 'entry_type'    =>  QuestionType::class,
                 'allow_add' =>  true,
-                'allow_delete'  =>  true,
+                'allow_delete'  =>  true
             ])
             ->get('questions')->addModelTransformer($transformer);
 

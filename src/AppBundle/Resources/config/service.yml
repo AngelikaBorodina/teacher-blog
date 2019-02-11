@@ -1,5 +1,4 @@
 services:
-
     app.service.calculation:
         class: AppBundle\Service\Calculation
         autowire: false
@@ -20,3 +19,7 @@ services:
               - "@doctrine.orm.default_entity_manager"
             tags: ['validator.constraint_validator']
 
+    app.service.file_uploader:
+            class: AppBundle\Service\FileUploader
+            arguments:
+              $targetDirectory: '%kernel.root_dir%/../web/uploads/'

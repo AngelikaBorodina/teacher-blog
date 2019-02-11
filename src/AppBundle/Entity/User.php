@@ -52,15 +52,15 @@ class User
     private $admin=false;
 
     /**
-     * @ORM\Column(type="string",length=255, nullable=true)
+     * @ORM\Column(type="object",length=255, nullable=true)
      */
-    private $date;
+    private $data;
 
     /**
      * @ORM\OneToMany(targetEntity="CompletedTests",mappedBy="user")
      */
     private $tests;
-
+    
     /**
      * Constructor
      */
@@ -176,27 +176,27 @@ class User
     }
 
     /**
-     * Set date
+     * Set data
      *
-     * @param string $date
+     * @param string $data
      *
      * @return User
      */
-    public function setDate($date)
+    public function setData($data)
     {
-        $this->date = $date;
+        $this->data = $data;
 
         return $this;
     }
 
     /**
-     * Get date
+     * Get data
      *
      * @return string
      */
-    public function getDate()
+    public function getData()
     {
-        return $this->date;
+        return $this->data;
     }
 
     /**

@@ -52,9 +52,9 @@ class TestController extends Controller
             //return $this->redirectToRoute('createForm');
         }
 
-        return $this->render('default/test.html.twig',[
-            'form'=>$formTest->createView(),
-            'formQuestion'=>$formQuestion
-        ]);
+//        return $this->render('',[
+//            'form'=>$formTest->createView(),
+//            'formQuestion'=>$formQuestion
+//        ]);
     }
 }

@@ -9,7 +9,9 @@
 namespace AppBundle\Form\Admin;
 
 use AppBundle\Entity\Question;
+use AppBundle\Form\Admin\Type\AnswerType;
 use Doctrine\DBAL\Types\TextType;
+use Sonata\Form\Type\CollectionType;
 use Symfony\Component\Form\AbstractType;
 
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -31,7 +33,8 @@ class QuestionType extends AbstractType
             ])
             ->add('image',FileType::class, [
                 'required' => false,
-                'label' => 'Загрузить картинку'])
+                'label' => 'Загрузить картинку'
+            ])
             ->add('type',ChoiceType::class, [
                 'label' => 'Тип ответов',
                 'choices'  => [
@@ -40,10 +43,7 @@ class QuestionType extends AbstractType
                     'Свободный ответ' => Question::TEXT
                 ],
                 'attr'  =>  ['style' => 'border-bottom: 3px solid blue']
-            ]);
+            ])
+        ;
     }
-//    public function configureOptions(OptionsResolver $resolver)
-//    {
-//        $resolver->setDefaults(['data_class'=>null,]);
-//    }
 }

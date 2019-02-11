@@ -1,0 +1,17 @@
+{% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
+
+{%- block field -%}
+    {% spaceless %}
+        <table border="2" width="100%" cellpadding="5" style="border-color: #2a88bf">
+            {% for item in object.data %}
+                {#<p>{{ item['name'] }}</p>#}
+                {#<p>{{ item['description'] }}</p>#}
+                {#<p>------------------------</p>#}
+                <tr>
+                    <th>{{ item['name'] }}</th>
+                    <td>{{ item['description'] }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endspaceless %}
+{%- endblock -%}

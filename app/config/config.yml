@@ -36,7 +36,7 @@ twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
     form_themes:
-            - 'form/fields.html.twig'
+          - '@App/Admin/image.html.twig'
 
 # Doctrine Configuration
 doctrine:
@@ -89,8 +89,8 @@ sonata_block:
             contexts:   [admin]
 
 sonata_admin:
-    title: 'INFOBrain'
-#    titleLogo: "../src/AppBundle/logo.png"
+#    title: 'INFOBrain'
+    title_logo: "/bundles/app/images/logo.png"
     show_mosaic_button: false
     options:
         html5_validate: false
@@ -98,6 +98,8 @@ sonata_admin:
         blocks:
             - { position: left, type: sonata.admin.block.admin_list }
         groups:
+            admin:
+                label:  Администратор
             test:
                 label:  Тесты
                 on_top: true

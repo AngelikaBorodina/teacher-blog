@@ -13,13 +13,6 @@ use Symfony\Component\Validator\Constraints\Regex;
 
 class ClassesAdmin extends AbstractAdmin
 {
-//    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
-//    {
-//        $datagridMapper
-//            ->add('class')
-//        ;
-//    }
-
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
@@ -47,11 +40,4 @@ class ClassesAdmin extends AbstractAdmin
 
     }
 
-//    protected function configureShowFields(ShowMapper $showMapper)
-//    {
-//        $showMapper
-//            ->add('id')
-//            ->add('class')
-//        ;
-//    }
 }

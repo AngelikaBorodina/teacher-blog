@@ -15,7 +15,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\DataTransformerInterface;
 
-class DataTransformer implements DataTransformerInterface
+class QuestionsTransformer implements DataTransformerInterface
 {
     private $em;
     private $test;

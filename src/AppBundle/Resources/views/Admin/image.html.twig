@@ -1,0 +1,6 @@
+{% block image_widget %}
+    {% spaceless %}
+        <img src="{{ asset(pathImg) }}" alt="" style="max-width: 200px">
+        {{ block('form_widget') }}
+    {% endspaceless %}
+{% endblock %}
