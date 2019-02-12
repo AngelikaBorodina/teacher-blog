@@ -4,10 +4,8 @@ namespace AppBundle\Admin;
 
 use AppBundle\Form\Admin\ImageType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Show\ShowMapper;
 
 class ProgressAdmin extends AbstractAdmin
 {
@@ -16,8 +14,10 @@ class ProgressAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('file', ImageType::class, [
-                'label'=>'Фото'
+            ->add('image', null, [
+                'label' => 'Фото',
+                'template'  =>  '@App/Admin/progress/list/image.html.twig'
+
             ])
             ->add('_action', null, [
                 'actions' => [
@@ -36,18 +36,11 @@ class ProgressAdmin extends AbstractAdmin
             ->add('file', ImageType::class, [
                 'required' => false,
                 'label' => 'Картинка',
-                'path'  => $this->dir.'/'.$progress->getPathImage()
+                'path'  => $this->dir.'/'.$progress->getImage()
             ])
         ;
     }
 
-//    protected function configureShowFields(ShowMapper $showMapper)
-//    {
-//        $showMapper
-//            ->add('id')
-//            ->add('pathImage')
-//        ;
-//    }
     public function prePersist($image)
     {
         $this->uploadImage($image);
@@ -60,24 +53,25 @@ class ProgressAdmin extends AbstractAdmin
 
     public function uploadImage($image)
     {
-
         $container = $this->getConfigurationPool()->getContainer();
         $fileUploader = $container->get('app.service.file_uploader');
 
-        if (file_exists($fileUploader->getTargetDirectory() . $this->dir . '/' . $image->getPathImage())){
-            $fileUploader->remove($image->getPathImage(), $this->dir);
-        }
-
         $uploadImage = $image->getFile();
-        $pathFile=$fileUploader->upload($uploadImage, $this->dir);
-        $image->setPathImage($pathFile);
-        $image->setFile(null);
+
+        if ($uploadImage){
+            if ($image->getImage()){
+                $fileUploader->remove($image->getImage(), $this->dir);
+            }
+            $pathFile=$fileUploader->upload($uploadImage, $this->dir);
+            $image->setImage($pathFile);
+            $image->setFile(null);
+        }
     }
 
     public function preRemove($object)
     {
         $container = $this->getConfigurationPool()->getContainer();
         $fileUploader = $container->get('app.service.file_uploader');
-        $fileUploader->remove($object->getPathImage(), $this->dir);
+        $fileUploader->remove($object->getImage(), $this->dir);
     }
 }

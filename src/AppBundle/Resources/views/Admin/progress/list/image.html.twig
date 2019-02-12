@@ -1,0 +1,22 @@
+{#{% extends '@SonataAdmin/CRUD/list_string.html.twig' %}#}
+{#{% extends '@SonataAdmin/CRUD/list.html.twig'%}#}
+
+{#{%- block list_table -%}#}
+    {#{{ dump(admin.code) }}#}
+    {#{% spaceless %}#}
+        {#{% set pathImg = 'uploads/question/'~object.pathImage %}#}
+        {#{{ dump(pathImg) }}#}
+        {#<img src="{{ asset(pathImg) }}" alt="" style="max-width: 200px">#}
+    {#{% endspaceless %}#}
+{#{%- endblock -%}#}
+
+{#{% block title %}#}
+    {#{{ dump('lalal') }}#}
+{#{% endblock %}#}
+
+{% extends admin.getTemplate('base_list_field') %}
+
+{% block field %}
+    {% set pathImg = 'uploads/progress/'~object.image %}
+    <img src="{{ asset(pathImg) }}" alt="" style="max-width: 200px">
+{% endblock %}

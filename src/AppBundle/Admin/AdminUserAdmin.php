@@ -4,6 +4,7 @@ namespace AppBundle\Admin;
 
 use AppBundle\Entity\User;
 use AppBundle\Form\Admin\DataType;
+use AppBundle\Form\Admin\ImageType;
 use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -19,6 +20,7 @@ final class AdminUserAdmin extends AbstractAdmin
 {
     protected $baseRoutePattern = 'superadmin';
     protected $baseRouteName = 'super_admin';
+    private $dir = 'avatar';
 
     public function createQuery($context = 'list')
     {
@@ -47,6 +49,7 @@ final class AdminUserAdmin extends AbstractAdmin
 
     protected function configureFormFields(FormMapper $formMapper)
     {
+        $admin = $this->getSubject();
         $formMapper
             ->add('fio', TextType::class, [
                 'label' =>  'ФИО',
@@ -56,6 +59,11 @@ final class AdminUserAdmin extends AbstractAdmin
                     new Regex(['pattern' => '/[а-яА-ЯёЁ]/', 'message' => 'Неверно заполнено ФИО']),
                     new Length(['min' => 10, 'minMessage' => 'Слишком короткое ФИО'])]]
             )
+            ->add('file', ImageType::class, [
+                'required' => false,
+                'label' => 'Фото',
+                'path'  => $this->dir.'/'.$admin->getPhoto()
+            ])
             ->add('data', 'sonata_type_native_collection', [
                 'label' =>  'Характеристики:',
                 'entry_type'    => DataType::class,
@@ -71,9 +79,14 @@ final class AdminUserAdmin extends AbstractAdmin
             ->add('fio', null, [
                 'label' => 'Фамилия Имя Отчество:'
             ])
+            ->add('photo', null, [
+                'label' => 'Фото',
+                'template'  =>  '@App/Admin/superadmin/show/avatar.html.twig'
+
+            ])
             ->add('data', null, [
                 'label' => 'Данные:',
-                'template'  =>  '@App/Admin/AdminUser/index.html.twig'
+                'template'  =>  '@App/Admin/superadmin/show/data.html.twig'
             ])
         ;
     }
@@ -85,5 +98,39 @@ final class AdminUserAdmin extends AbstractAdmin
         ];
 
         return $list;
+    }
+
+    public function prePersist($image)
+    {
+        $this->uploadImage($image);
+    }
+
+    public function preUpdate($image)
+    {
+        $this->uploadImage($image);
+    }
+
+    public function uploadImage($image)
+    {
+        $container = $this->getConfigurationPool()->getContainer();
+        $fileUploader = $container->get('app.service.file_uploader');
+
+        $uploadImage = $image->getFile();
+
+        if ($uploadImage){
+            if ($image->getPhoto()){
+                $fileUploader->remove($image->getPhoto(), $this->dir);
+            }
+            $pathFile=$fileUploader->upload($uploadImage, $this->dir);
+            $image->setPhoto($pathFile);
+            $image->setFile(null);
+        }
+    }
+
+    public function preRemove($object)
+    {
+        $container = $this->getConfigurationPool()->getContainer();
+        $fileUploader = $container->get('app.service.file_uploader');
+        $fileUploader->remove($object->getPhoto(), $this->dir);
     }
 }

@@ -26,13 +26,14 @@ class EmailExistsValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint)
     {
+
         if (!$constraint instanceof EmailExists) {
             throw new UnexpectedTypeException($constraint, EmailExists::class);
         }
 
         /** @var User $student */
         $student=$this->em->getRepository(User::class)->findOneBy(['email'=>$value]);
-        if (isset($student)) {
+        if (isset($student) && $student!=$constraint->currentObject) {
             $this->context->buildViolation($constraint->massage)
                 ->setParameters(['{{ email }}' => $value, '{{ fio }}' => $student->getFio()])
                 ->addViolation();

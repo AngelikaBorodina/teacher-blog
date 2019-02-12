@@ -9,6 +9,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * @ORM\Entity
@@ -60,7 +61,21 @@ class User
      * @ORM\OneToMany(targetEntity="CompletedTests",mappedBy="user")
      */
     private $tests;
-    
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $active = false;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $photo;
+
+    /** @var  File */
+    private $file;
+
+
     /**
      * Constructor
      */
@@ -178,7 +193,7 @@ class User
     /**
      * Set data
      *
-     * @param string $data
+     * @param \stdClass $data
      *
      * @return User
      */
@@ -192,11 +207,59 @@ class User
     /**
      * Get data
      *
-     * @return string
+     * @return \stdClass
      */
     public function getData()
     {
         return $this->data;
+    }
+
+    /**
+     * Set active
+     *
+     * @param boolean $active
+     *
+     * @return User
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+
+        return $this;
+    }
+
+    /**
+     * Get active
+     *
+     * @return boolean
+     */
+    public function getActive()
+    {
+        return $this->active;
+    }
+
+    /**
+     * Set photo
+     *
+     * @param string $photo
+     *
+     * @return User
+     */
+    public function setPhoto($photo)
+    {
+        $this->photo = $photo;
+
+        return $this;
+    }
+
+    /**
+     * Get photo
+     *
+     * @return string
+     */
+    public function getPhoto()
+    {
+        return $this->photo;
     }
 
     /**
@@ -255,5 +318,29 @@ class User
     public function getTests()
     {
         return $this->tests;
+    }
+
+    /**
+     * Set file
+     *
+     * @param File $file
+     *
+     * @return User
+     */
+    public function setFile($file)
+    {
+        $this->file = $file;
+
+        return $this;
+    }
+
+    /**
+     * Get file
+     *
+     * @return File
+     */
+    public function getFile()
+    {
+        return $this->file;
     }
 }

@@ -41,7 +41,9 @@ class TestAdmin extends AbstractAdmin
         /** @var Test $test */
         $test = $this->getSubject();
         $container = $this->getConfigurationPool()->getContainer();
-        $transformer = new QuestionsTransformer($container->get('doctrine.orm.default_entity_manager'), $test);
+        $em = $container->get('doctrine.orm.default_entity_manager');
+        $fileUploader = $container->get('app.service.file_uploader');
+        $transformer = new QuestionsTransformer($em, $test, $fileUploader);
 
         $formMapper
             ->add('title', null, ['label' => 'Название теста'])
@@ -54,7 +56,6 @@ class TestAdmin extends AbstractAdmin
                 'allow_delete'  =>  true
             ])
             ->get('questions')->addModelTransformer($transformer);
-
     }
 
     protected function configureShowFields(ShowMapper $showMapper)

@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * @ORM\Entity
@@ -34,7 +35,7 @@ class Question
     private $description;
 
     /**
-     * @ORM\Column(type="string",length=255, nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
     private $image;
 
@@ -47,6 +48,12 @@ class Question
      * @ORM\OneToMany(targetEntity="Variant", mappedBy="question")
      */
     private $variants;
+
+    /**
+     * @var File
+     */
+    private $file;
+
     /**
      * Constructor
      */
@@ -199,5 +206,29 @@ class Question
     public function getVariants()
     {
         return $this->variants;
+    }
+
+    /**
+     * Set file
+     *
+     * @param File $file
+     *
+     * @return Question
+     */
+    public function setFile($file)
+    {
+        $this->file = $file;
+
+        return $this;
+    }
+
+    /**
+     * Get file
+     *
+     * @return File
+     */
+    public function getFile()
+    {
+        return $this->file;
     }
 }

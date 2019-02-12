@@ -31,9 +31,10 @@ class QuestionType extends AbstractType
                 'required' => false,
                 'label' => 'Текст вопроса'
             ])
-            ->add('image',FileType::class, [
+            ->add('file',ImageType::class, [
                 'required' => false,
-                'label' => 'Загрузить картинку'
+                'label' => 'Загрузить картинку',
+                'path' => 'questions/'
             ])
             ->add('type',ChoiceType::class, [
                 'label' => 'Тип ответов',

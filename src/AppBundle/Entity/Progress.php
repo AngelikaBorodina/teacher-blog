@@ -27,9 +27,9 @@ class Progress
     private $id;
 
     /**
-     * @ORM\Column(type="string", nullable=false)
+     * @ORM\Column(type="text", nullable=false)
      */
-    private $pathImage;
+    private $image;
 
     /**
      * @var File
@@ -47,27 +47,27 @@ class Progress
     }
 
     /**
-     * Set pathImage
+     * Set image
      *
-     * @param string $pathImage
+     * @param string $image
      *
      * @return Progress
      */
-    public function setPathImage($pathImage)
+    public function setImage($image)
     {
-        $this->pathImage = $pathImage;
+        $this->image = $image;
 
         return $this;
     }
 
     /**
-     * Get pathImage
+     * Get image
      *
      * @return string
      */
-    public function getPathImage()
+    public function getImage()
     {
-        return $this->pathImage;
+        return $this->image;
     }
 
     /**
