@@ -11,12 +11,15 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Classes;
 use AppBundle\Entity\User;
+use AppBundle\Validator\Constraints\EmailExists;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class UserController extends Controller
 {
@@ -28,18 +31,46 @@ class UserController extends Controller
      */
     public function actionRegister(Request $request)
     {
+        // массив введеных данных пользователем
+//        $input = [
+//            'name'  => $request->get('name'),
+//            'email' => $request->get('email'),
+//            'class' => $request->get('class'),
+//            'password' => $request->get('password')
+//        ];
+
         $input = [
-            'name'  =>  $request->get('name'),
-            'email' =>  $request->get('email')
+            'fio'  => 'Мухина Светлана Викторовна',
+            'email' => '1@mail.ru',
+            'id_class' => '2',
+            'password' => '000000',
+            'verifyPassword' => '000000'
         ];
 
+        // массив проверок для данных
         $constraints = [
-            'name'  =>  [
-                new NotBlank(['message' => 'empty name'])
+            'fio'  =>  [
+                new NotBlank(['message' => 'Имя не должно быть пустым']),
+//                new Regex(['pattern' => '/^[а-яА-ЯёЁ ]+$/', 'message' => 'Недопустимые символы в строке']),
+                new Length(['min' => 10, 'minMessage' => 'Слишком короткое ФИО'])
             ],
             'email' =>  [
-                new Email(['message' => 'empty email'])
+                new NotBlank(['message' => 'Email не должен быть пустым']),
+                new Email(['message' => 'Неверный формат']),
+                new EmailExists(['message' => 'Данный email уже используется'])
+            ],
+            'id_class' =>  [
+                new NotBlank(['message' => 'Выберите номер своего класса'])
+            ],
+            'password' =>  [
+                new NotBlank(['message' => 'Введите пароль']),
+                new Length(['min' => 6, 'minMessage' => 'Минимальное количество символов: 6']),
+                new Regex(['pattern' => '/^([a-zA-Z0-9\_])+$/', 'message' => 'Допустимые символы: латинские буквы, цифры и _'])
+            ],
+            'verifyPassword' => [
+                new Regex(['pattern' => '/^' . $input['password'] . '$/', 'message' => 'Пароли не совпадают'])
             ]
+
         ];
 
         $validator = $this->get('validator');
@@ -50,32 +81,24 @@ class UserController extends Controller
                 $errors[$field] = $validationResult[0]->getMessage();
             }
         }
+
         if (count($errors) > 0) {
-
+//            return json_encode($errors);
+            dump($errors);die;
         }
-        dump($errors);die;
-        ///==============================
-        //$date=$request->query->all();
 
-        $date['fio']='Муркина Галина Викторовна';
-        $date['email']='1@mail.ru';
-        $date['password']='123';
-        $date['class']='2';
+        //сохраяняем в базу
+        $user=new User();
+        $user->setFio($input['fio'])
+            ->setEmail($input['email'])
+            ->setPassword(md5($input['password']))
+            ->setClass(
+                $this->getDoctrine()->getRepository(Classes::class)
+                    ->find($input['id_class']));
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($user);
+        $entityManager->flush();
 
-        if (!$this->getDoctrine()->getRepository(User::class)
-                ->findBy(['email'=>$date['email']])){
-            $user=new User();
-            $user->setFio($date['fio'])
-                ->setEmail($date['email'])
-                ->setPassword($date['password'])
-                ->setClass(
-                    $this->getDoctrine()->getRepository(Classes::class)
-                        ->find($date['class']));
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($user);
-            $entityManager->flush();
-        }
-        //dump($date['email']);die();
         return new Response('');
     }
 

@@ -34,7 +34,7 @@ class EmailExistsValidator extends ConstraintValidator
         /** @var User $student */
         $student=$this->em->getRepository(User::class)->findOneBy(['email'=>$value]);
         if (isset($student) && $student!=$constraint->currentObject) {
-            $this->context->buildViolation($constraint->massage)
+            $this->context->buildViolation($constraint->message)
                 ->setParameters(['{{ email }}' => $value, '{{ fio }}' => $student->getFio()])
                 ->addViolation();
         }
