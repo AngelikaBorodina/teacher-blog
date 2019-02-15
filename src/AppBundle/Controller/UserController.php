@@ -103,7 +103,7 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/auth", name="reg")
+     * @Route("/auth", name="auth")
      * @param Request $request
      * @return Response
      */

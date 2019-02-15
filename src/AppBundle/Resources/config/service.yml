@@ -23,3 +23,8 @@ services:
             class: AppBundle\Service\FileUploader
             arguments:
               $targetDirectory: '%kernel.root_dir%/../web/uploads/'
+
+    app.service.parser_test:
+            class: AppBundle\Service\ParserTest
+            arguments:
+              - "@doctrine.orm.default_entity_manager"
