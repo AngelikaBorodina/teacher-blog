@@ -83,7 +83,7 @@ class UserController extends Controller
         }
 
         if (count($errors) > 0) {
-//            return json_encode($errors);
+//            return $this->json($errors);
             dump($errors);die;
         }
 
@@ -99,6 +99,42 @@ class UserController extends Controller
         $entityManager->persist($user);
         $entityManager->flush();
 
+        return new Response('');
+    }
+
+    /**
+     * @Route("/auth", name="auth")
+     * @param Request $request
+     * @return Response
+     */
+    public function actionAuth(Request $request)
+    {
+        $input = [
+            'email'     => '1@mail.ru',
+            'password'  => '000000'
+        ];
+
+        $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(['email' => $input['email']]);
+        if (!isset($user)) {
+            return $this->json(['error' => 'Введен неправильный email']);
+        }
+
+        if (!($user->getPassword() === md5($input['password']))) {
+            return $this->json(['error' => 'Введен неправильный пароль']);
+        }
+
+        if (!$user->getActive()) {
+            return $this->json(['error' => 'Ваша учетка не подтверждена, обратитесь к администратору сайта']);
+        }
+
+        $data = [
+            'id'    =>  $user->getId(),
+            'fio'   =>  $user->getFio(),
+            'class' =>  $user->getClass()->getClass()
+        ];
+
+//        return $this->json($data);
+        dump($user);die;
         return new Response('');
     }
 

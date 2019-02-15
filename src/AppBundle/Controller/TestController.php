@@ -11,7 +11,9 @@ namespace AppBundle\Controller;
 use AppBundle\Form\QuestionType;
 use AppBundle\Form\TestType;
 use AppBundle\Service\Messenger;
+use AppBundle\Service\ParserTest;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
@@ -56,5 +58,29 @@ class TestController extends Controller
 //            'form'=>$formTest->createView(),
 //            'formQuestion'=>$formQuestion
 //        ]);
+        return new Response('');
+    }
+
+    /**
+     *  @Route("/check", name ="check")
+     * @param Request $request
+     * @param ParserTest $parser
+     * @return Response
+     */
+    public function actionCheckParser(Request $request, ParserTest $parser) {
+
+        $build = $this->createFormBuilder();
+        $form = $build
+            ->add('file', FileType::class)
+            ->add('submit', SubmitType::class)
+            ->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted()){
+            $parser->loadTest($form->getData()['file']);
+        }
+        return $this->render('default/parser.html.twig', [
+            'form' => $form->createView()
+        ]);
+//        return new Response('');
     }
 }

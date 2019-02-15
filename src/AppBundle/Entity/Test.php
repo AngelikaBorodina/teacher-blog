@@ -33,7 +33,7 @@ class Test
     /**
      * @ORM\Column(type="boolean")
      */
-    private $active;
+    private $active = false;
 
     /**
      * @ORM\OneToMany(targetEntity="Question", mappedBy="test", cascade={"persist"})

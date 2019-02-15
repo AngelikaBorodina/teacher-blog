@@ -45,7 +45,7 @@ class Question
     private $type;
 
     /**
-     * @ORM\OneToMany(targetEntity="Variant", mappedBy="question")
+     * @ORM\OneToMany(targetEntity="Variant", mappedBy="question", cascade={"persist"})
      */
     private $variants;
 
