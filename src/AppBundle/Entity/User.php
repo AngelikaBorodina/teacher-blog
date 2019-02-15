@@ -53,7 +53,7 @@ class User
     private $admin=false;
 
     /**
-     * @ORM\Column(type="object",length=255, nullable=true)
+     * @ORM\Column(type="object", nullable=true)
      */
     private $data;
 
