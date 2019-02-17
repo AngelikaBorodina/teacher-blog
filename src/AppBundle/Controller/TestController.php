@@ -78,7 +78,7 @@ class TestController extends Controller
         if ($form->isSubmitted()){
             $parser->loadTest($form->getData()['file']);
         }
-        return $this->render('default/parser.html.twig', [
+        return $this->render('@App/parser.html.twig', [
             'form' => $form->createView()
         ]);
 //        return new Response('');

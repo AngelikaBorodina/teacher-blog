@@ -56,9 +56,8 @@ class ParserTest
                 $variant = new Variant();
                 $variant
                     ->setDescription($data[1])
-                    ->setIsCorrect(/*boolval(*/(bool)$data[2]/*)*/)
+                    ->setIsCorrect(boolval(trim($data[2])))
                     ->setQuestion($question);
-                dump($data[2]);
                 $question->addVariant($variant);
             }
         }
