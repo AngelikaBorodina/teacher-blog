@@ -10,14 +10,15 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="UserRepository")
  * @ORM\Table(name="user")
  * Class User
  * @package AppBundle\Entity
  */
-class User
+class User implements UserInterface, \Serializable
 {
     /**
      * @ORM\Id //первичный ключ
@@ -342,5 +343,71 @@ class User
     public function getFile()
     {
         return $this->file;
+    }
+
+    /**
+     * String representation of object
+     * @return string the string representation of the object or null
+     */
+    public function serialize()
+    {
+        return serialize([
+            $this->id,
+            $this->email,
+            $this->password,
+        ]);
+    }
+
+    /**
+     * @param string $serialized <p>
+     * The string representation of the object.
+     */
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            $this->email,
+            $this->password,
+            ) = unserialize($serialized, ['allowed_classes' => false]);
+    }
+
+    public function getRoles()
+    {
+        if ($this->admin){
+            return ['ROLE_ADMIN'];
+        }
+        return ['ROLE_USER'];
+    }
+
+    /**
+     * Returns the salt that was originally used to encode the password.
+     *
+     * This can return null if the password was not encoded using a salt.
+     *
+     * @return string|null The salt
+     */
+    public function getSalt()
+    {
+        return null;
+    }
+
+    /**
+     * Returns the username used to authenticate the user.
+     *
+     * @return string The username
+     */
+    public function getUsername()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Removes sensitive data from the user.
+     *
+     * This is important if, at any given point, sensitive information like
+     * the plain-text password is stored on this object.
+     */
+    public function eraseCredentials()
+    {
     }
 }

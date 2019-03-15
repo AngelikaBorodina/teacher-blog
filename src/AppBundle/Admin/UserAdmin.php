@@ -70,7 +70,7 @@ final class UserAdmin extends AbstractAdmin
                 'required'  =>  true,
                 'constraints'   =>  [
                     new NotBlank(['message' => 'Поле "ФИО" не должно быть пустым']),
-                    new Regex(['pattern' => '/^[а-яА-ЯёЁ]+$/', 'message' => 'Неверно заполнено ФИО']),
+                    new Regex(['pattern' => '/^[а-яА-ЯёЁ ]+$/', 'message' => 'Неверно заполнено ФИО']),
                     new Length(['min' => 10, 'minMessage' => 'Слишком короткое ФИО'])
                 ]
             ])

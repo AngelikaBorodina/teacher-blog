@@ -64,9 +64,9 @@ class ParserTest
         if ($question instanceof Question){
             $test->addQuestion($question);
         }
-//        $this->em->persist($test);
-//        $this->em->flush();
-        dump($test);die;
+        $this->em->persist($test);
+        $this->em->flush();
+//        dump($test);die;
     }
 
 }

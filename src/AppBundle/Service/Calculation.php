@@ -19,7 +19,7 @@ class Calculation
 
     private $percent;
     private $mark=0;
-    private $correctAnswers;//типизировать здесь можно?
+    private $correctAnswers;
     private $answers;
     private $question;
 
@@ -32,22 +32,28 @@ class Calculation
     {
         $this->percent = 100 / $test->getQuestions()->count();
         $questions = [];
+        //массив объектов вопросов по id
         foreach ($test->getQuestions() as $question) {
             $questions[$question->getId()] = $question;
         }
+
+        //перебираем вопросы с присвоением ответов ученика в answers
         foreach ($testArray['questions'] as $key => $this->answers) {
 
+            //объект проверяемого вопроса
             /** @var Question question */
             $this->question = $questions[$key];
 
+            //правильные ответы проверяемого вопроса
             /** @var Variant correctAnswers */
             $this->correctAnswers = $this->em->getRepository(Variant::class)
                 ->findBy(['question' => $key, 'is_correct' => 1]);
 
+            //вызываем функцию по типу вопроса
             $functionName = 'type' . ucfirst($this->question->getType());
             $this->$functionName();
         }
-        //dump($this->mark);die();
+
         return $this->mark;
     }
 
@@ -58,6 +64,8 @@ class Calculation
 
     private function typeCheckbox()
     {
+        //если количество ответов равно количеству вариантов
+        // - рассматриваем этот ответ как не правильный
         if ($this->question->getVariants()->count() == count($this->answers)) {
                   return;
         };
@@ -71,6 +79,8 @@ class Calculation
 
     private function typeText()
     {
+
+
         ($this->answers == $this->correctAnswers[0]->getDescription()) ? ($this->mark += $this->percent) : $this->mark;
     }
 

@@ -65,12 +65,12 @@ class ELTestController extends Controller
     public function CheckTestAction(Request $request, Calculation $calculation)
     {
         $testArray = [
-            'test'  =>  1,
+            'test'  =>  11,
             'user'  =>  1,
             'questions' =>  [
-                1   =>  2,
-                2   =>  [3, 6, 2],
-                3   =>  'зеленый'
+                30   =>  31,
+                32   =>  [35, 37],
+                31   =>  'зеленый'
             ]
         ];
         //=======================================

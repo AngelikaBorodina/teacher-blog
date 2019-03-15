@@ -39,12 +39,14 @@ final class AdminUserAdmin extends AbstractAdmin
         $em =$container->get('doctrine.orm.default_entity_manager');
         /** @var User $admin */
         $admin=$em->getRepository(User::class)->findOneBy(['admin' => true]);
-
-        $redirection = new RedirectResponse(
-            $this->getConfigurationPool()
-            ->getContainer()->get('router')
-            ->generate('super_admin_show', ['id' => $admin->getId()]));
-        $redirection->send();
+        if($admin){
+            $redirection = new RedirectResponse(
+                $this->getConfigurationPool()
+                    ->getContainer()->get('router')
+                    ->generate('super_admin_show', ['id' => $admin->getId()]));
+            $redirection->send();
+        }
+//        dump('Администратора не существует,его нужно заводить в базе данных');die;
     }
 
     protected function configureFormFields(FormMapper $formMapper)
